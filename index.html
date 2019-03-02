@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RSK Demo</title>
+
+
+
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <h1>RSK Demo</h1>
+        <h2>Show Identity</h2>
+        <button type="button" class="btn btn-default" id="btnConfirmIdentity">Confirm Identity</button>
+<div>
+  <img src="http://localhost/irisscan.png">
+</div>
+
+        <h2>Current Balance</h2>
+        <p id="myBalance"></p>
+
+        <h2>Make Transfer</h2>
+        <input id="payUser" type="text">
+        <button id="btnAddID">Add ID</button>
+
+
+        <h2>Update Identity</h2>
+        <label for="idnumber" class="col-lg-2 control-label">Identity Number</label>
+        <input id="idnumber" type="text">
+        <button id="btnAddID">Add ID</button>
+        <h2 id="myIDHeader">Identity Details</h2>
+        <p id="myID"></p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script>
+    if (typeof web3 !== 'undefined') {
+       web3 = new Web3(web3.currentProvider);
+   } else {
+       // set the provider you want from Web3.providers
+       web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:4444"));
+   }
+       // Our future code here..
+        web3.eth.defaultAccount = web3.eth.accounts[0];
+        var RSKContract = web3.eth.contract([ { "constant": true, "inputs": [], "name": "testName", "outputs": [ { "name": "", "type": "int256" } ], "payable": false, "stateMutability": "pure", "type": "function" }, { "constant": true, "inputs": [ { "name": "myint", "type": "int256" } ], "name": "testName5", "outputs": [ { "name": "", "type": "int256" } ], "payable": false, "stateMutability": "pure", "type": "function" } ])
+        //  var aRSKContract = RSKContract.at('0xe9ed820fb84db24a6a58c805d22dbf6123b59264');
+//0xb28adb9d60407c686095d1cd3acc241e0eec6fa0 rsk
+  var aRSKContract = RSKContract.at('0xb28adb9d60407c686095d1cd3acc241e0eec6fa0');
+
+
+$("#btnConfirmIdentity").click(function() {
+    aRSKContract.testName( function(error, result){
+    if(!error)
+    {
+        $("#myID").html('ID  ' + result.c[0]);
+        console.log(result);
+    }
+    else {
+        $("#myID").html('ID '  );
+        console.error(error);
+      }
+    });
+
+
+});
+        console.log(aRSKContract);
+
+    </script>
+
+</body>
+</html>
