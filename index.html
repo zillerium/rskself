@@ -6,33 +6,72 @@
     <title>RSK Demo</title>
 
 
-
+    <style>
+    .hero {
+      background-color: #2ba6cb;
+      padding: 0 90px;
+    }
+    </style>
     <script src="./node_modules/web3/dist/web3.min.js"></script>
+    <script type="text/javascript">
+    function hideImage() {
+    var img1 = document.getElementById('scannedimage');
+    img1.style.visibility = 'hidden';
+ }
+</script>
 
 </head>
-<body>
-    <div class="container">
-        <h1>RSK Demo</h1>
-        <h2>Show Identity</h2>
-        <button type="button" class="btn btn-default" id="btnConfirmIdentity">Confirm Identity</button>
+<body onload="hideImage()">
+
+<div class="hero">
+    <div class="row">
+    <div class="col-lg-4 col-md-4 col-xs-4 thumb">
+          <img class="img-responsive" src="http://167.99.84.190:8080/irisdemo.png">
+      </div>
+    <div class="col-lg-4 col-md-4 col-xs-4 thumb">
+            <h1 style="color:white;">RSK Demo - Secure Personal Token Management</h1>
+      </div>
+    <div class="col-lg-4 col-md-4 col-xs-4 thumb">
+        <img class="img-responsive" src="http://167.99.84.190:8080/womenscanning.jpg">
+      </div>
+    </div>
+  </div>
+
+
+
+          <div class="row">
+          <div class="col-lg-4 col-md-4 col-xs-4 thumb">
+        <button type="button" class="btn btn-primary" id="btnGetScan">Scan Iris</button>
+      </div>
+          <div class="col-lg-4 col-md-4 col-xs-4 thumb">
+        <img id="scannedimage"  src="http://167.99.84.190:8080/irisscan.png">
+      </div>
+    </div>
+
+
+
+
+            <div class="row">
+            <div class="col-lg-4 col-md-4 col-xs-4 thumb">
+            <p id="createdhashimage"></p>
+        </div>
+                 <div class="col-lg-4 col-md-4 col-xs-4 thumb">
+             <label for="hashimage" class="col-lg-2 control-label"></label>
+             <input id="hashimage" type="text" size="100">
+        </div>
+      </div>
+
+
+
+
 <div>
-  <img src="http://localhost/irisscan.png">
-</div>
-
-        <h2>Current Balance</h2>
+        <button type="button" class="btn btn-primary" id="btnGetBalance">Get Token Balance</button>
         <p id="myBalance"></p>
-
-        <h2>Make Transfer</h2>
         <input id="payUser" type="text">
-        <button id="btnAddID">Add ID</button>
+        <button id="btnAddTokens" class="btn btn-primary" >Add Tokens</button>
+        <p id="userMessage"></p>
 
 
-        <h2>Update Identity</h2>
-        <label for="idnumber" class="col-lg-2 control-label">Identity Number</label>
-        <input id="idnumber" type="text">
-        <button id="btnAddID">Add ID</button>
-        <h2 id="myIDHeader">Identity Details</h2>
-        <p id="myID"></p>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
@@ -54,21 +93,35 @@
    }
        // Our future code here..
         web3.eth.defaultAccount = web3.eth.accounts[0];
-        var RSKContract = web3.eth.contract([ { "constant": true, "inputs": [], "name": "testName", "outputs": [ { "name": "", "type": "int256" } ], "payable": false, "stateMutability": "pure", "type": "function" }, { "constant": true, "inputs": [ { "name": "myint", "type": "int256" } ], "name": "testName5", "outputs": [ { "name": "", "type": "int256" } ], "payable": false, "stateMutability": "pure", "type": "function" } ])
+        var RSKContract = web3.eth.contract([ { "constant": false, "inputs": [ { "name": "userIrisScan", "type": "bytes32" }, { "name": "addMoney", "type": "uint256" }, { "name": "numberApprovedCalls", "type": "uint256" } ], "name": "initPersonalBalance", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "userIrisScan", "type": "bytes32" }, { "name": "addMoney", "type": "uint256" } ], "name": "setPersonalBalance", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "userIrisScan", "type": "bytes32" } ], "name": "getPersonalBalance", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "bytes32" } ], "name": "PersonalRecords", "outputs": [ { "name": "currentBalance", "type": "uint256" }, { "name": "numberApprovedCalls", "type": "uint256" }, { "name": "recordExists", "type": "bool" } ], "payable": false, "stateMutability": "view", "type": "function" } ])
         //  var aRSKContract = RSKContract.at('0xe9ed820fb84db24a6a58c805d22dbf6123b59264');
 //0xb28adb9d60407c686095d1cd3acc241e0eec6fa0 rsk
-  var aRSKContract = RSKContract.at('0xb28adb9d60407c686095d1cd3acc241e0eec6fa0');
+  var aRSKContract = RSKContract.at('0x72336882d59bee3fec7f8583bf3e796a03abbcad');
 
 
-$("#btnConfirmIdentity").click(function() {
-    aRSKContract.testName( function(error, result){
+  $("#btnGetScan").click(function() {
+
+        var img = document.getElementById('scannedimage');
+        img.style.visibility = 'visible';
+
+
+    document.getElementById("hashimage").value = '0x79e5451f16991531fb96629beddf8517c910c0d3dbb7a5562cac95357b5dc4e6';
+
+  });
+
+
+
+$("#btnGetBalance").click(function() {
+    var hashimage = $("#hashimage").val();
+    aRSKContract.getPersonalBalance( hashimage, function(error, result){
     if(!error)
     {
-        $("#myID").html('ID  ' + result.c[0]);
+        $("#myBalance").html('My Balance  ' + result.c[0]);
+
         console.log(result);
     }
     else {
-        $("#myID").html('ID '  );
+        $("#myBalance").html('My Balance '  );
         console.error(error);
       }
     });
