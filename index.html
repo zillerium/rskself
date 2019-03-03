@@ -96,7 +96,7 @@
         var RSKContract = web3.eth.contract([ { "constant": false, "inputs": [ { "name": "userIrisScan", "type": "bytes32" }, { "name": "addMoney", "type": "uint256" }, { "name": "numberApprovedCalls", "type": "uint256" } ], "name": "initPersonalBalance", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "userIrisScan", "type": "bytes32" }, { "name": "addMoney", "type": "uint256" } ], "name": "setPersonalBalance", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "userIrisScan", "type": "bytes32" } ], "name": "getPersonalBalance", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "bytes32" } ], "name": "PersonalRecords", "outputs": [ { "name": "currentBalance", "type": "uint256" }, { "name": "numberApprovedCalls", "type": "uint256" }, { "name": "recordExists", "type": "bool" } ], "payable": false, "stateMutability": "view", "type": "function" } ])
         //  var aRSKContract = RSKContract.at('0xe9ed820fb84db24a6a58c805d22dbf6123b59264');
 //0xb28adb9d60407c686095d1cd3acc241e0eec6fa0 rsk
-  var aRSKContract = RSKContract.at('0x72336882d59bee3fec7f8583bf3e796a03abbcad');
+  var aRSKContract = RSKContract.at('0x3785e94d4c0c94146ba07c51b5363a4b83bc7624');
 
 
   $("#btnGetScan").click(function() {
