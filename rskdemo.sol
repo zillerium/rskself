@@ -4,6 +4,7 @@ contract rskself {
 
      struct  PersonalRecord {
         uint currentBalance;
+        uint numberApprovedCalls; // API calls - to avoid Metamask in running systems
         bool recordExists;
     }
 
@@ -17,11 +18,15 @@ contract rskself {
 
     function setPersonalBalance (bytes32 userIrisScan, uint addMoney) public  {
         require(PersonalRecords[userIrisScan].recordExists);
+        require(PersonalRecords[userIrisScan].numberApprovedCalls>0);
+        PersonalRecords[userIrisScan].numberApprovedCalls--; // need to check API calls
         PersonalRecords[userIrisScan].currentBalance+=addMoney;
     }
 
-    function initPersonalBalance (bytes32 userIrisScan, uint addMoney) public  {
+    function initPersonalBalance (bytes32 userIrisScan, uint addMoney, uint numberApprovedCalls) public  {
         require(!PersonalRecords[userIrisScan].recordExists);
+        PersonalRecords[userIrisScan].recordExists=true;
+        PersonalRecords[userIrisScan].numberApprovedCalls=numberApprovedCalls;
         PersonalRecords[userIrisScan].currentBalance=addMoney;
     }
 
